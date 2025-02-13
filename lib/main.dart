@@ -12,7 +12,6 @@ import 'package:work/controllers/profile_provider.dart';
 import 'package:work/controllers/signup_provider.dart';
 import 'package:work/controllers/zoom_provider.dart';
 import 'package:work/views/ui/onboarding/onboarding_screen.dart';
-import 'package:work/views/ui/onboarding/widgets/page_three.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +49,7 @@ class MyApp extends StatelessWidget {
               iconTheme: IconThemeData(color: Color(kDark.value)),
               primarySwatch: Colors.grey,
             ),
-            home: const PageThree(),
+            home: const OnBoardingScreen(),
           );
         });
   }
