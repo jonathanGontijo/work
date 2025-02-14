@@ -2,18 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:work/constants/app_constants.dart';
 import 'package:work/controllers/login_provider.dart';
 import 'package:work/views/common/app_bar.dart';
 import 'package:work/views/common/custom_btn.dart';
 import 'package:work/views/common/custom_textfield.dart';
 import 'package:work/views/common/exports.dart';
 import 'package:work/views/common/height_spacer.dart';
-import 'package:work/views/common/reusable_text.dart';
 import 'package:work/views/ui/auth/signup.dart';
+import 'package:work/views/ui/mainscreen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -119,7 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 HeightSpacer(size: 10),
                 CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => MainScreen());
+                  },
                   text: 'Login',
                 )
               ],
