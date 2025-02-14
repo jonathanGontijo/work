@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:work/controllers/exports.dart';
 import 'package:work/views/common/exports.dart';
 import 'package:work/views/ui/onboarding/widgets/page_one.dart';
@@ -41,7 +42,26 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   PageTwo(),
                   PageThree(),
                 ],
-              )
+              ),
+              Positioned(
+                bottom: height * 0.12,
+                left: 0,
+                right: 0,
+                child: onBoardNotifier.isLastPage
+                    ? SizedBox.shrink()
+                    : Center(
+                        child: SmoothPageIndicator(
+                          controller: pageController,
+                          count: 3,
+                          effect: WormEffect(
+                              dotHeight: 12,
+                              dotWidth: 12,
+                              spacing: 10,
+                              dotColor: Color(kDarkGrey.value).withOpacity(0.5),
+                              activeDotColor: Color(kLight.value)),
+                        ),
+                      ),
+              ),
             ],
           );
         },
