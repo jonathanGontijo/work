@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Positioned(
                   top: 2.h,
-                  right: 5.w,
+                  right: 9.w,
                   child: GestureDetector(
                     onTap: () {},
                     child: ReusableText(
