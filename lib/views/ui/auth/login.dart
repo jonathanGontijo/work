@@ -34,18 +34,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Consumer<LoginNotifier>(
       builder: (context, loginNotifier, child) {
+        loginNotifier.getPrefs();
         return Scaffold(
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: CustomAppBar(
-                text: 'Login',
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(CupertinoIcons.arrow_left),
-                ),
-              )),
+            preferredSize: Size.fromHeight(50),
+            child: CustomAppBar(
+              text: 'Login',
+              child: loginNotifier.entrypoint && !loginNotifier.loggedIn
+                  ? GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(CupertinoIcons.arrow_left),
+                    )
+                  : SizedBox.shrink(),
+            ),
+          ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: ListView(
