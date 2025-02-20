@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:work/constants/app_constants.dart';
 
-/*
 class ImageUpoader extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
 
@@ -58,4 +61,3 @@ class ImageUpoader extends ChangeNotifier {
   //   imageUrl = await ref.getDownloadURL();
   // }
 }
-*/

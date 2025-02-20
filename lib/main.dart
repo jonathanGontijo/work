@@ -37,7 +37,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => SignUpNotifier()),
     ChangeNotifierProvider(create: (context) => JobsNotifier()),
     ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
-    //ChangeNotifierProvider(create: (context) => ImageUpoader()),
+    ChangeNotifierProvider(create: (context) => ImageUpoader()),
     ChangeNotifierProvider(create: (context) => ProfileNotifier()),
   ], child: const MyApp()));
 }
