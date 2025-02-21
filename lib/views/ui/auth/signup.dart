@@ -11,6 +11,7 @@ import 'package:work/views/common/app_bar.dart';
 import 'package:work/views/common/app_style.dart';
 import 'package:work/views/common/custom_btn.dart';
 import 'package:work/views/common/custom_textfield.dart';
+import 'package:work/views/common/drawer/drawer_widget.dart';
 import 'package:work/views/common/height_spacer.dart';
 import 'package:work/views/common/reusable_text.dart';
 import 'package:work/views/ui/auth/login.dart';
@@ -37,6 +38,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    var loginNotifier = Provider.of<LoginNotifier>(context);
     return Consumer<SignUpNotifier>(
       builder: (context, signupNotifier, child) {
         return Scaffold(
@@ -96,7 +98,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   controller: password,
                   hintText: "Password",
                   obscureText: signupNotifier.obscureText,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.text,
                   validator: (password) {
                     if (signupNotifier.passwordValidator(password ?? '')) {
                       return 'Please enter a valid password with at least one uppercase, one lowercase, one special character, one digit and length of 8 charactes';
@@ -123,9 +125,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () {
-                      Get.to(() => LoginPage());
-                    },
+                    onTap: () {},
                     child: ReusableText(
                         text: "Login",
                         style:
@@ -134,7 +134,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 HeightSpacer(size: 10),
                 CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    loginNotifier.firstTime = !loginNotifier.firstTime;
+                  },
                   text: 'Sign Up',
                 )
               ],
