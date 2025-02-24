@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const kDark = Color(0xFF000000);
@@ -12,27 +11,35 @@ const kDarkBlue = Color(0xff1c153e);
 const kLightPurple = Color(0xff6352c5);
 const kDarkPurple = Color(0xff6352c5);
 
-double height = 812.h;
+double height = 825.h;
 double width = 375.w;
 
-String theId = "";
+const kDefaultImage = 'https://firebasestorage.googleapis'
+    '.com/v0/b/fir-test-project-5.appspot.com/o/default_user.png?alt=media&'
+    'token=6a260559-82da-4b43-89eb-5d80b4801e1d&_gl=1*50wf4w*_ga*MTIwMDc0ODU2'
+    'Mi4xNjgzMTUxNzAw*_ga_CW55HF8NVT*MTY4NjI0ODgyNy40MS4xLjE2ODYyNDk2MzUuMC4wL'
+    'jA.';
+
+String theId = '';
 
 List<String> requirements = [
-  "Design and Build sophisticated and highly scalable apps using Flutter.",
-  "Build custom packages in Flutter using the functionalities and APIs already available in native Android and IOS.",
-  "Translate and Build the designs and Wireframes into high quality responsive UI code.",
-  "Explore feasible architectures for implementing new features.",
-  "Resolve any problems existing in the system and suggest and add new features in the complete system.",
-  "Suggest space and time efficient Data Structures.",
+  'Design and Build sophisticated and highly scalable apps using Flutter.',
+  'Build custom packages in Flutter using the functionalities and APIs already available in native Android and IOS.',
+  'Translate and Build the designs and Wireframes into high quality responsive UI code.',
+  'Explore feasible architectures for implementing new features.',
+  'Resolve any problems existing in the system and suggest and add new features in the complete system.',
+  'Suggest space and time efficient Data Structures.',
 ];
 
 String desc =
     "Flutter Developer is responsible for running and designing product application features across multiple devices across platforms. Flutter is Google's UI toolkit for building beautiful, natively compiled apps for mobile, web, and desktop from a single codebase. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.";
 
 List<String> skills = [
-  "Node JS",
-  "Java SpringBoot",
-  "Flutter and Dart",
-  "Firebase",
-  "AWS",
+  'Node JS',
+  'Java SpringBoot',
+  'Flutter and Dart',
+  'Firebase',
+  'AWS',
 ];
+
+List<String> profile = [];

@@ -3,7 +3,9 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:work/constants/app_constants.dart';
+import 'package:work/main.dart';
 import 'package:work/models/request/auth/login_model.dart';
+import 'package:work/models/request/auth/profile_update_model.dart';
 import 'package:work/services/helpers/auth_helper.dart';
 import 'package:work/views/ui/auth/update_user.dart';
 import 'package:work/views/ui/mainscreen.dart';
@@ -46,16 +48,23 @@ class LoginNotifier extends ChangeNotifier {
   }
 
   getPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 
     entrypoint = prefs.getBool('entrypoint') ?? false;
-    loggedIn = prefs.getBool('loggedIn') ?? false;
+    final token = prefs.getString('token');
+    if (token != null) {
+      loggedIn = true;
+    } else {
+      loggedIn = false;
+    }
   }
 
   final loginFormKey = GlobalKey<FormState>();
+  final profileFormKey = GlobalKey<FormState>();
 
   bool validateAndSave() {
     final form = loginFormKey.currentState;
+
     if (form!.validate()) {
       form.save();
       return true;
@@ -64,25 +73,78 @@ class LoginNotifier extends ChangeNotifier {
     }
   }
 
-  userLogin(LoginModel model) {
-    AuthHelper.login(model).then((response) {
-      if (response && firstTime) {
-        Get.off(() => const PersonalDetails());
-      } else if (response && !firstTime) {
-        Get.off(() => const MainScreen());
-      } else if (!response) {
-        Get.snackbar("Sign Failed", "Please Check your credentials",
-            colorText: Color(kLight.value),
-            backgroundColor: Colors.red,
-            icon: Icon(Icons.add_alert));
+  bool profileValidation() {
+    final form = profileFormKey.currentState;
+
+    if (form!.validate()) {
+      form.save();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Fix: make nullable for proper push to home after login
+  Future<void> userLogin(LoginModel model) async {
+    await AuthHelper.login(model).then((response) async {
+      if (response[0]) {
+        Get.snackbar(
+          'Login Success',
+          'Enjoy your search for a job',
+          colorText: Color(kLight.value),
+          backgroundColor: Color(kLightBlue.value),
+          icon: const Icon(Icons.add_alert),
+        );
+
+        await Future.delayed(const Duration(seconds: 1)).then((value) {
+          Get.offAll(() => const MainScreen());
+        });
+      } else {
+        Get.snackbar(
+          response[1],
+          'Please try again',
+          colorText: Color(kLight.value),
+          backgroundColor: Color(kOrange.value),
+          icon: const Icon(Icons.add_alert),
+        );
       }
     });
   }
 
   logout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', false);
     await prefs.remove('token');
-    _firstTime = false;
+    await prefs.remove('profile');
+    await prefs.remove('userId');
+    await Future.delayed(const Duration(seconds: 1)).then((value) {
+      Get.offAll(() => defaultHome);
+    });
+  }
+
+  updateProfile(ProfileUpdateReq model) async {
+    await AuthHelper.updateProfile(model).then((response) {
+      if (response) {
+        Get.snackbar(
+          'Profile Update',
+          'Enjoy your search for a job',
+          colorText: Color(kLight.value),
+          backgroundColor: Color(kLightBlue.value),
+          icon: const Icon(Icons.add_alert),
+        );
+
+        Future.delayed(const Duration(seconds: 3)).then((value) {
+          Get.offAll(() => const MainScreen());
+        });
+      } else {
+        Get.snackbar(
+          'Updating Failed',
+          'Please try again',
+          colorText: Color(kLight.value),
+          backgroundColor: Color(kOrange.value),
+          icon: const Icon(Icons.add_alert),
+        );
+      }
+    });
   }
 }

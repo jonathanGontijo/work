@@ -10,6 +10,7 @@ import 'package:work/views/common/height_spacer.dart';
 import 'package:work/views/common/reusable_text.dart';
 import 'package:work/views/ui/auth/login.dart';
 import 'package:work/views/ui/auth/signup.dart';
+import 'package:work/views/ui/mainscreen.dart';
 
 class PageThree extends StatelessWidget {
   const PageThree({super.key});
@@ -23,44 +24,48 @@ class PageThree extends StatelessWidget {
         color: Color(kLightBlue.value),
         child: Column(
           children: [
-            Image.asset("assets/images/page3.png"),
+            Image.asset(
+              'assets/images/page3.png',
+              height: 500,
+            ),
             const HeightSpacer(size: 20),
             ReusableText(
-              text: "Welcome To JobJub",
-              style: appstyle(
-                30,
-                Color(kLight.value),
-                FontWeight.w500,
-              ),
+              text: 'Welcome To JobHub',
+              style: appstyle(30, Color(kLight.value), FontWeight.w600),
             ),
             const HeightSpacer(size: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w),
               child: Text(
-                'We help you find your dream job to your skillest, location and preference',
+                'We help you find your dream job to your skillset, location and preference to build your career',
                 textAlign: TextAlign.center,
                 style: appstyle(14, Color(kLight.value), FontWeight.normal),
               ),
             ),
-            HeightSpacer(size: 20),
+            const HeightSpacer(size: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 CustomOutlineBtn(
                   onTap: () async {
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
+                    final prefs = await SharedPreferences.getInstance();
+
                     await prefs.setBool('entrypoint', true);
-                    Get.to(() => LoginPage());
+
+                    await Get.to(
+                      () => const LoginPage(
+                        drawer: true,
+                      ),
+                    );
                   },
-                  text: "Login",
+                  text: 'Login',
                   width: width * 0.4,
                   height: height * 0.06,
                   color: Color(kLight.value),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => RegistrationPage());
+                    Get.to(() => const RegistrationPage());
                   },
                   child: Container(
                     width: width * 0.4,
@@ -68,18 +73,32 @@ class PageThree extends StatelessWidget {
                     color: Color(kLight.value),
                     child: Center(
                       child: ReusableText(
-                          text: "Sign Up",
-                          style: appstyle(
-                              16, Color(kLightBlue.value), FontWeight.w600)),
+                        text: 'Sign Up',
+                        style: appstyle(
+                          16,
+                          Color(kLightBlue.value),
+                          FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-            HeightSpacer(size: 30),
-            ReusableText(
-                text: "Continue as guest",
-                style: appstyle(16, Color(kLight.value), FontWeight.w400))
+            const HeightSpacer(size: 30),
+            GestureDetector(
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+
+                await prefs.setBool('entrypoint', true);
+
+                await Get.to(() => const MainScreen());
+              },
+              child: ReusableText(
+                text: 'Continue as guest',
+                style: appstyle(16, Color(kLight.value), FontWeight.w400),
+              ),
+            ),
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:work/constants/app_constants.dart';
 import 'package:work/controllers/login_provider.dart';
 import 'package:work/controllers/signup_provider.dart';
+import 'package:work/models/request/auth/signup_model.dart';
 import 'package:work/views/common/app_bar.dart';
 import 'package:work/views/common/app_style.dart';
 import 'package:work/views/common/custom_btn.dart';
@@ -38,107 +39,129 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    var loginNotifier = Provider.of<LoginNotifier>(context);
+    final loginNotifier = Provider.of<LoginNotifier>(context);
     return Consumer<SignUpNotifier>(
       builder: (context, signupNotifier, child) {
         return Scaffold(
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: CustomAppBar(
-                text: 'Register',
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(CupertinoIcons.arrow_left),
-                ),
-              )),
+            preferredSize: const Size.fromHeight(50),
+            child: CustomAppBar(
+              text: 'Sign Up',
+              child: GestureDetector(
+                onTap: () {
+                  Get.offAll(() => const LoginPage(drawer: true));
+                },
+                child: const Icon(CupertinoIcons.arrow_left),
+              ),
+            ),
+          ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                HeightSpacer(size: 50),
+                const HeightSpacer(size: 50),
                 ReusableText(
-                  text: 'Welcome Back',
+                  text: 'Hello, Welcome!',
                   style: appstyle(30, Color(kDark.value), FontWeight.w600),
                 ),
                 ReusableText(
-                  text: 'Fill the details to login to your account',
-                  style: appstyle(16, Color(kDarkGrey.value), FontWeight.w600),
+                  text: 'Fill the details to signup for an account',
+                  style: appstyle(
+                    16,
+                    Color(kDarkGrey.value),
+                    FontWeight.w600,
+                  ),
                 ),
-                HeightSpacer(size: 50),
+                const HeightSpacer(size: 50),
                 CustomTextField(
-                  controller: email,
-                  hintText: "Full Name",
+                  controller: name,
                   keyboardType: TextInputType.text,
+                  hintText: 'Full name',
                   validator: (name) {
                     if (name!.isEmpty) {
-                      return 'Please enter a valid name';
+                      return 'Please enter your name';
                     } else {
                       return null;
                     }
                   },
                 ),
-                HeightSpacer(size: 20),
+                const HeightSpacer(size: 20),
                 CustomTextField(
                   controller: email,
-                  hintText: "Email",
                   keyboardType: TextInputType.emailAddress,
+                  hintText: 'Email',
                   validator: (email) {
-                    if (email!.isEmpty || !email.contains("@")) {
+                    if (email!.isEmpty && email.contains('@')) {
                       return 'Please enter a valid email';
                     } else {
                       return null;
                     }
                   },
                 ),
-                HeightSpacer(size: 20),
+                const HeightSpacer(size: 20),
                 CustomTextField(
                   controller: password,
-                  hintText: "Password",
-                  obscureText: signupNotifier.obscureText,
                   keyboardType: TextInputType.text,
+                  hintText: 'Password',
+                  obscureText: signupNotifier.obscureText,
                   validator: (password) {
-                    if (signupNotifier.passwordValidator(password ?? '')) {
-                      return 'Please enter a valid password with at least one uppercase, one lowercase, one special character, one digit and length of 8 charactes';
-                    } else {
-                      return null;
+                    if (password!.isEmpty || password.length < 8) {
+                      return 'Please enter a valid password with at least one uppercase, one lowercase, one digit, a special character and length of 8 characters';
                     }
+                    return null;
                   },
                   suffixIcon: GestureDetector(
                     onTap: () {
                       signupNotifier.obscureText = !signupNotifier.obscureText;
                     },
-                    child: signupNotifier.obscureText
-                        ? Icon(
-                            Icons.visibility,
-                            color: Color(kDark.value),
-                          )
-                        : Icon(
-                            Icons.visibility_off,
-                            color: Color(kDark.value),
-                          ),
+                    child: Icon(
+                      signupNotifier.obscureText
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Color(kDark.value),
+                    ),
                   ),
                 ),
-                HeightSpacer(size: 10),
+                const HeightSpacer(size: 10),
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () {},
-                    child: ReusableText(
-                        text: "Login",
-                        style:
-                            appstyle(14, Color(kDark.value), FontWeight.w400)),
+                    onTap: () {
+                      Get.offAll(() => const LoginPage(drawer: true));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ReusableText(
+                          text: 'Password should be at least 8 characters',
+                          style: appstyle(9, kOrange, FontWeight.w500),
+                        ),
+                        ReusableText(
+                          text: 'Login',
+                          style: appstyle(
+                            14,
+                            Color(kDark.value),
+                            FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                HeightSpacer(size: 10),
+                const HeightSpacer(size: 50),
                 CustomButton(
                   onTap: () {
-                    loginNotifier.firstTime = !loginNotifier.firstTime;
+                    final model = SignupModel(
+                      username: name.text,
+                      email: email.text,
+                      password: password.text,
+                    );
+
+                    signupNotifier.upSignup(model);
                   },
                   text: 'Sign Up',
-                )
+                ),
               ],
             ),
           ),

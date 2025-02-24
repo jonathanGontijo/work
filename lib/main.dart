@@ -14,36 +14,39 @@ import 'package:work/controllers/profile_provider.dart';
 import 'package:work/controllers/signup_provider.dart';
 import 'package:work/controllers/zoom_provider.dart';
 import 'package:work/firebase_options.dart';
-import 'package:work/views/ui/auth/login.dart';
-import 'package:work/views/ui/auth/update_user.dart';
 import 'package:work/views/ui/mainscreen.dart';
 import 'package:work/views/ui/onboarding/onboarding_screen.dart';
 
 Widget defaultHome = const OnBoardingScreen();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences.getInstance();
 
   final entrypoint = prefs.getBool('entrypoint') ?? false;
-  final loggedIn = prefs.getBool('loggedIn') ?? false;
-  if (entrypoint & !loggedIn) {
-    defaultHome = LoginPage();
-  } else if (entrypoint == true) {
+
+  if (entrypoint) {
     defaultHome = const MainScreen();
   }
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
-    ChangeNotifierProvider(create: (context) => LoginNotifier()),
-    ChangeNotifierProvider(create: (context) => ZoomNotifier()),
-    ChangeNotifierProvider(create: (context) => SignUpNotifier()),
-    ChangeNotifierProvider(create: (context) => JobsNotifier()),
-    ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
-    ChangeNotifierProvider(create: (context) => ImageUpoader()),
-    ChangeNotifierProvider(create: (context) => ProfileNotifier()),
-  ], child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
+        ChangeNotifierProvider(create: (context) => LoginNotifier()),
+        ChangeNotifierProvider(create: (context) => ZoomNotifier()),
+        ChangeNotifierProvider(create: (context) => SignUpNotifier()),
+        ChangeNotifierProvider(create: (context) => JobsNotifier()),
+        ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
+        ChangeNotifierProvider(create: (context) => ImageUpoader()),
+        ChangeNotifierProvider(create: (context) => ProfileNotifier()),
+        //  ChangeNotifierProvider(create: (context) => ChatNotifier()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -54,21 +57,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        useInheritedMediaQuery: true,
-        designSize: const Size(375, 812),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'JobHub',
-            theme: ThemeData(
-              scaffoldBackgroundColor: Color(kLight.value),
-              iconTheme: IconThemeData(color: Color(kDark.value)),
-              primarySwatch: Colors.grey,
-            ),
-            home: PersonalDetails(),
-          );
-        });
+      useInheritedMediaQuery: true,
+      designSize: const Size(375, 825),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Dbestech JobHub',
+          theme: ThemeData(
+            scaffoldBackgroundColor: Color(kLight.value),
+            iconTheme: IconThemeData(color: Color(kDark.value)),
+            primarySwatch: Colors.grey,
+          ),
+          home: defaultHome,
+        );
+      },
+    );
   }
 }
